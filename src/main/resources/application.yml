@@ -22,5 +22,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+api:
+  prefix: /api/v1
 # Path folder static
 #upload-path=src/main/resources/static
