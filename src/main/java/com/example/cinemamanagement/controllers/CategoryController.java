@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/categories")
+@RequestMapping("${api.prefix}/categories")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAllCategories(){
+    public ResponseEntity<ResponseSuccess> getAllCategories(){
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get all category information successfully")

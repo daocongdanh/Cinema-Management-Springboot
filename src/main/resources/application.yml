@@ -25,4 +25,4 @@ spring:
 api:
   prefix: /api/v1
 # Path folder static
-#upload-path=src/main/resources/static
+upload-path: src/main/resources/static

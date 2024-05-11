@@ -1,7 +1,7 @@
 package com.example.cinemamanagement.services.impl;
 
 import com.example.cinemamanagement.dtos.CategoryDTO;
-import com.example.cinemamanagement.exceptions.DataNotFoundException;
+import com.example.cinemamanagement.exceptions.ResourceNotFoundException;
 import com.example.cinemamanagement.exceptions.DuplicateValueException;
 import com.example.cinemamanagement.models.Category;
 import com.example.cinemamanagement.repositories.CategoryRepository;
@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(long id) {
         return categoryRepository.findById(id).orElseThrow(()
-                -> new DataNotFoundException("Category not found"));
+                -> new ResourceNotFoundException("Category not found"));
     }
 
     @Override
@@ -44,8 +44,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Category updateCategory(long categoryId, CategoryDTO categoryDTO) {
-        Category category = getCategoryById(categoryId);
+    public Category updateCategory(long id, CategoryDTO categoryDTO) {
+        Category category = getCategoryById(id);
         if(!category.getCategoryName().equals(categoryDTO.getCategoryName())
         && categoryRepository.existsByCategoryName(categoryDTO.getCategoryName())){
             throw new DuplicateValueException("Category name already exists");
