@@ -66,7 +66,7 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Delete product successfully")
-                .status(HttpStatus.ACCEPTED.value())
+                .status(HttpStatus.NO_CONTENT.value())
                 .build());
     }
 }

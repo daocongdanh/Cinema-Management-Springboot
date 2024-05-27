@@ -14,6 +14,7 @@ import com.example.cinemamanagement.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -27,10 +28,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse createProduct(ProductDTO productDTO) {
         if(productDTO.getImage() == null)
-            throw new RuntimeException("");
-        if(productRepository.existsByProductName(productDTO.getProductName())){
+            throw new RuntimeException("image must be not blank");
+        if(productRepository.existsByProductName(productDTO.getProductName()))
             throw new DuplicateValueException("Product name already exists");
-        }
+
         Category category = categoryService.getCategoryById(productDTO.getCategoryId());
         String image = fileUtil.createFile(productDTO.getImage());
         Product product = productRepository.save(Product.builder()

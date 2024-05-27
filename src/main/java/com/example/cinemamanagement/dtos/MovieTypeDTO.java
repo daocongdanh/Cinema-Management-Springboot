@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
+public class MovieTypeDTO {
 
-    @NotBlank(message = "categoryName must be not blank")
-    private String categoryName;
+    @NotBlank(message = "movieTypeName must be not blank")
+    private String name;
 }
