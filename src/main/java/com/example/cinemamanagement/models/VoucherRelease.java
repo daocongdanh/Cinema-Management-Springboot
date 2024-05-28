@@ -1,8 +1,10 @@
 package com.example.cinemamanagement.models;
 
 import com.example.cinemamanagement.enums.ObjectType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.time.LocalDate;
@@ -25,9 +27,11 @@ public class VoucherRelease {
     private String realeaseName;
 
     @Column(name = "start_date")
+    @JsonFormat(pattern = "dd-MM-yyy")
     private LocalDate startDate;
 
     @Column(name = "finish_date")
+    @JsonFormat(pattern = "dd-MM-yyy")
     private LocalDate finishDate;
 
     @Column(name = "price")

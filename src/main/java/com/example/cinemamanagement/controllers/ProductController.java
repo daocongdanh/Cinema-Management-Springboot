@@ -50,6 +50,14 @@ public class ProductController {
                 .build());
     }
 
+    @GetMapping("/category/{cid}")
+    public ResponseEntity<ResponseSuccess> getProductsByCategory(@PathVariable("cid") Long cid){
+        return ResponseEntity.ok().body(ResponseSuccess.builder()
+                .message("Get all product by category information successfully")
+                .status(HttpStatus.OK.value())
+                .data(productService.getProductByCategory(cid))
+                .build());
+    }
     @PutMapping("/{id}")
     public ResponseEntity<ResponseSuccess> updateProduct(@PathVariable("id") long id,
                                                          @ModelAttribute @Valid ProductDTO productDTO){

@@ -1,5 +1,6 @@
 package com.example.cinemamanagement.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CategoryDTO {
 
-    @NotBlank(message = "categoryName must be not blank")
+    @NotBlank(message = "Category name must be not blank")
+    @JsonProperty("category_name")
     private String categoryName;
 }

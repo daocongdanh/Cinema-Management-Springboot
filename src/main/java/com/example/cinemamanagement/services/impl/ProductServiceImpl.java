@@ -59,6 +59,15 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductResponse::fromProduct)
                 .toList();
     }
+
+    @Override
+    public List<ProductResponse> getProductByCategory(long cid) {
+        Category category = categoryService.getCategoryById(cid);
+        return productRepository.findByCategory(category).stream()
+                .map(ProductResponse::fromProduct)
+                .toList();
+    }
+
     @Override
     @Transactional
     public ProductResponse updateProduct(long id, ProductDTO productDTO) {

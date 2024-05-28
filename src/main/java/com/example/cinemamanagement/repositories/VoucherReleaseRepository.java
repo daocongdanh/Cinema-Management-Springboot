@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VoucherReleaseRepository extends JpaRepository<VoucherRelease, Long> {
+    boolean existsByRealeaseName(String releaseName);
 }

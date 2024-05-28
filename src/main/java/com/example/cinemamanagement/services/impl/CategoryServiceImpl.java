@@ -19,16 +19,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public Category createCategory(CategoryDTO categoryDTO) {
-        if(categoryRepository.existsByCategoryName(categoryDTO.getCategoryName())){
+        if(categoryRepository.existsByCategoryName(categoryDTO.getCategoryName()))
             throw new DuplicateValueException("Category name already exists");
-        }
-        else{
-            Category category = Category
+        Category category = Category
                     .builder()
                     .categoryName(categoryDTO.getCategoryName())
                     .build();
-            return categoryRepository.save(category);
-        }
+        return categoryRepository.save(category);
     }
 
     @Override

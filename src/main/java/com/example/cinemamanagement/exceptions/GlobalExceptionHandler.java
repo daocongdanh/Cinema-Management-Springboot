@@ -48,6 +48,17 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InvalidParamException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseError> handleInvalidParamException(InvalidParamException e){
+        return ResponseEntity.badRequest().body(
+                ResponseError.builder()
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .message(e.getMessage())
+                        .build()
+        );
+    }
+
     @ExceptionHandler(UploadFileException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseError> handleUploadFileException(UploadFileException e){
