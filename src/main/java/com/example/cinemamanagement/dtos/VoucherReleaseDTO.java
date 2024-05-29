@@ -21,11 +21,11 @@ public class VoucherReleaseDTO {
     @JsonProperty("realease_name")
     private String realeaseName;
 
-    @JsonFormat(pattern = "dd-MM-yyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("start_date")
     private LocalDate startDate;
 
-    @JsonFormat(pattern = "dd-MM-yyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("finish_date")
     private LocalDate finishDate;
 

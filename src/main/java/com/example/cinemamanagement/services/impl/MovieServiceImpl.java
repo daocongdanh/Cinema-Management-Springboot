@@ -13,6 +13,7 @@ import com.example.cinemamanagement.services.MovieTypeService;
 import com.example.cinemamanagement.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class MovieServiceImpl implements MovieService {
     private final MovieTypeService movieTypeService;
     private final FileUtil fileUtil;
     @Override
+    @Transactional
     public MovieResponse createMovie(MovieDTO movieDTO) {
         if(movieDTO.getPoster() == null)
             throw new RuntimeException("poster must be not blank");
@@ -62,6 +64,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional
     public MovieResponse updateMovie(long id, MovieDTO movieDTO) {
         Movie movie = movieRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Movie not found")
@@ -89,6 +92,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional
     public void deleteMovie(long id) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found"));

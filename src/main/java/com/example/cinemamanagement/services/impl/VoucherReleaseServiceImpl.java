@@ -9,6 +9,7 @@ import com.example.cinemamanagement.repositories.VoucherReleaseRepository;
 import com.example.cinemamanagement.services.VoucherReleaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,7 @@ public class VoucherReleaseServiceImpl implements VoucherReleaseService {
     private final VoucherReleaseRepository voucherReleaseRepository;
 
     @Override
+    @Transactional
     public VoucherRelease createVoucherRelease(VoucherReleaseDTO voucherReleaseDTO) {
         if(voucherReleaseRepository.existsByRealeaseName(voucherReleaseDTO.getRealeaseName()))
             throw new DuplicateValueException("VoucherRelease name already exists");
@@ -51,6 +53,7 @@ public class VoucherReleaseServiceImpl implements VoucherReleaseService {
     }
 
     @Override
+    @Transactional
     public VoucherRelease updateVoucherRelease(long id, VoucherReleaseDTO voucherReleaseDTO) {
         VoucherRelease voucherRelease = getVoucherReleaseById(id);
         if(!voucherRelease.getRealeaseName().equals(voucherReleaseDTO.getRealeaseName())

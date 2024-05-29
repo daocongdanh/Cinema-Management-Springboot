@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,9 +20,6 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Transient
-    private final double VAT = 0.1;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -43,15 +41,17 @@ public class Bill {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public double calcProductBill(){
-        return productBills == null ? 0 : productBills.stream().mapToDouble(ProductBill::calcTotal).sum();
-    }
-    public double calcTicketBill(){
-        return tickets.stream().mapToDouble(Ticket::calcTotal).sum();
+    public void addProductBill(ProductBill productBill){
+        if(productBills == null)
+            productBills = new ArrayList<>();
+        productBills.add(productBill);
+        productBill.setBill(this);
     }
 
-    public double getTotal() {
-        return (calcProductBill() + calcTicketBill())*(1+VAT)
-                - ((voucher == null) ? 0 : (voucher.getVoucherRelease().getPrice()));
+    public void addTicket(Ticket ticket){
+        if(tickets == null)
+            tickets = new ArrayList<>();
+        tickets.add(ticket);
+        ticket.setBill(this);
     }
 }

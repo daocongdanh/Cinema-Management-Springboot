@@ -2,6 +2,7 @@ package com.example.cinemamanagement.responses;
 
 import com.example.cinemamanagement.enums.MovieStatus;
 import com.example.cinemamanagement.models.Movie;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class MovieResponse {
     private Long id;
 
+    @JsonProperty("movie_name")
     private String movieName;
 
+    @JsonProperty("running_time")
     private int runningTime;
 
     private String country;
@@ -26,6 +29,7 @@ public class MovieResponse {
 
     private String description;
 
+    @JsonProperty("release_year")
     private int releaseYear;
 
     private String author;
@@ -34,8 +38,10 @@ public class MovieResponse {
 
     private String trailer;
 
+    @JsonProperty("movie_status")
     private MovieStatus movieStatus;
 
+    @JsonProperty("movie_type_name")
     private String movieTypeName;
 
     public static MovieResponse fromMovie(Movie movie){

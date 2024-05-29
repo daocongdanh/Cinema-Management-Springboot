@@ -12,6 +12,7 @@ import com.example.cinemamanagement.services.VoucherReleaseService;
 import com.example.cinemamanagement.services.VoucherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +23,7 @@ public class VoucherServiceImpl implements VoucherService {
     private final VoucherRepository voucherRepository;
     private final VoucherReleaseService voucherReleaseService;
     @Override
+    @Transactional
     public VoucherResponse createVoucher(VoucherDTO voucherDTO) {
         if(voucherRepository.existsByCode(voucherDTO.getCode()))
             throw new DuplicateValueException("Code already exists");
@@ -54,6 +56,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
+    @Transactional
     public VoucherResponse updateVoucher(long id, VoucherDTO voucherDTO) {
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Voucher not found"));
@@ -77,6 +80,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
+    @Transactional
     public void deleteVoucher(long id) {
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Voucher not found"));

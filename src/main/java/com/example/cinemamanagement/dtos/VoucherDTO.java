@@ -25,11 +25,11 @@ public class VoucherDTO {
 
     private boolean status;
 
-    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @JsonProperty("used_at")
     private LocalDateTime usedAt;
 
-    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @JsonProperty("released_at")
     private LocalDateTime releasedAt;
 

@@ -18,11 +18,6 @@ public class Seat {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "seat_number")
-    private int seatNumber;
-
-    @Column(name = "row")
-    private String row;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_type")
@@ -36,7 +31,4 @@ public class Seat {
         return seatType == SeatType.VIP ? 20 : 0;
     }
 
-    public String getName(){
-        return row + seatNumber;
-    }
 }

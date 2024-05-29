@@ -26,8 +26,4 @@ public class ProductBill {
     @ManyToOne
     @JoinColumn(name = "bill_id", nullable = false)
     private Bill bill;
-
-    public double calcTotal(){
-        return product.getSellPrice() * this.quantity;
-    }
 }
