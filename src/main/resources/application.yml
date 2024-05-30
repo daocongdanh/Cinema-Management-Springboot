@@ -15,7 +15,7 @@ spring:
         format_sql: true
     show-sql: true
 
-#Image size
+# Image size
   servlet:
     multipart:
       enabled: true
@@ -26,3 +26,8 @@ api:
   prefix: /api/v1
 # Path folder static
 upload-path: src/main/resources/static
+
+# Jwt
+jwt:
+  expiration: 86400000 # (24 * 60 * 60 * 1000 mls)
+  secretKey: XeKCntPJuk/iJoaxpv9ifO4aj+6TXWpL123R9b47aqH0=

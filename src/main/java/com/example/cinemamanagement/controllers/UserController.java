@@ -1,6 +1,7 @@
 package com.example.cinemamanagement.controllers;
 
-import com.example.cinemamanagement.dtos.UserDTO;
+import com.example.cinemamanagement.dtos.LoginDTO;
+import com.example.cinemamanagement.dtos.RegisterDTO;
 import com.example.cinemamanagement.responses.ResponseSuccess;
 import com.example.cinemamanagement.services.UserService;
 import jakarta.validation.Valid;
@@ -15,14 +16,24 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("")
-    public ResponseEntity<ResponseSuccess> createUser(@Valid @RequestBody UserDTO userDTO){
+    @PostMapping("/register")
+    public ResponseEntity<ResponseSuccess> createUser(@Valid @RequestBody RegisterDTO registerDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create user successfully")
                 .status(HttpStatus.CREATED.value())
-                .data(userService.createUser(userDTO))
+                .data(userService.createUser(registerDTO))
                 .build());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseSuccess> login(@Valid @RequestBody LoginDTO loginDTO){
+        return ResponseEntity.ok().body(ResponseSuccess.builder()
+                .message("Login successfully")
+                .status(HttpStatus.OK.value())
+                .data(userService.login(loginDTO))
+                .build());
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseSuccess> getUserById(@PathVariable("id") long id){
@@ -44,11 +55,11 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseSuccess> updateUser(@PathVariable("id") long id,
-                                                      @Valid @RequestBody UserDTO userDTO){
+                                                      @Valid @RequestBody RegisterDTO registerDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Update user successfully")
                 .status(HttpStatus.ACCEPTED.value())
-                .data(userService.updateUser(id, userDTO))
+                .data(userService.updateUser(id, registerDTO))
                 .build());
     }
 }

@@ -1,18 +1,19 @@
 package com.example.cinemamanagement.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class RegisterDTO {
 
     @NotBlank(message = "firstName must be not blank")
     @JsonProperty("first_name")
@@ -37,4 +38,6 @@ public class UserDTO {
     private String password;
 
     private boolean active;
+
+    private List<String> roles;
 }
