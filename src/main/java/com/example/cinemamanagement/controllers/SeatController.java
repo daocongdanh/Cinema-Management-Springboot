@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class SeatController {
     private final SeatService seatService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createSeat(@Valid @RequestBody SeatDTO seatDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create seat successfully")
@@ -34,6 +36,7 @@ public class SeatController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateSeat(@PathVariable("id") long id,
                                                       @Valid @RequestBody SeatDTO seatDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
@@ -44,6 +47,7 @@ public class SeatController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> deleteSeat(@PathVariable("id") long id){
         seatService.deleteSeat(id);
         return ResponseEntity.ok().body(ResponseSuccess.builder()

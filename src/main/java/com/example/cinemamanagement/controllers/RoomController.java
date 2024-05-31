@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createRoom(@Valid @RequestBody RoomDTO roomDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create room successfully")
@@ -43,6 +45,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateRoom(@PathVariable("id") long id,
                                                       @Valid @RequestBody RoomDTO roomDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
@@ -53,6 +56,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> deleteRoom(@PathVariable("id") long id){
         roomService.deleteRoom(id);
         return ResponseEntity.ok().body(ResponseSuccess.builder()

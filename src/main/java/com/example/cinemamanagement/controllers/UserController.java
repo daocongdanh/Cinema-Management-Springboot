@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,6 +37,7 @@ public class UserController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<ResponseSuccess> getUserById(@PathVariable("id") long id){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get user information successfully")
@@ -45,6 +47,7 @@ public class UserController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> getAllUsers(){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get all user information successfully")
@@ -54,6 +57,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateUser(@PathVariable("id") long id,
                                                       @Valid @RequestBody RegisterDTO registerDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()

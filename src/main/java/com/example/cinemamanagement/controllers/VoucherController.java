@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class VoucherController {
     private final VoucherService voucherService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createVoucher(@Valid @RequestBody VoucherDTO voucherDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create voucher successfully")
@@ -34,6 +36,7 @@ public class VoucherController {
     }
 
     @GetMapping("/voucherRelease/{vrId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> getVouchersByVoucherRelease(@PathVariable("vrId") long vrId){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get all voucher by voucherRelease information successfully")
@@ -43,6 +46,7 @@ public class VoucherController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateVoucher(@PathVariable("id") long id,
                                                          @RequestBody @Valid VoucherDTO voucherDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
@@ -53,6 +57,7 @@ public class VoucherController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> deleteVoucher(@PathVariable("id") long id){
         voucherService.deleteVoucher(id);
         return ResponseEntity.ok().body(ResponseSuccess.builder()

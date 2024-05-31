@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class BillController {
     private final BillService billService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createBill(@Valid @RequestBody BillDTO billDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create bill successfully")
@@ -43,6 +45,7 @@ public class BillController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> getAllBills(){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get all bill information successfully")

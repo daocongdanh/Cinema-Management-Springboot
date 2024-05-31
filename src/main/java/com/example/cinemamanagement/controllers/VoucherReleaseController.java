@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,6 +18,7 @@ public class VoucherReleaseController {
     private final VoucherReleaseService voucherReleaseService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createVoucherRelease(
             @Valid @RequestBody VoucherReleaseDTO voucherReleaseDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
@@ -27,6 +29,7 @@ public class VoucherReleaseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> getVoucherReleaseById(@PathVariable("id") long id){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get voucherRelease information successfully")
@@ -36,6 +39,7 @@ public class VoucherReleaseController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> getAllVoucherReleases(){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Get all voucherRelease information successfully")
@@ -45,6 +49,7 @@ public class VoucherReleaseController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateVoucherRelease(
             @PathVariable long id, @Valid @RequestBody VoucherReleaseDTO voucherReleaseDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class ShowTimeController {
     private final ShowTimeService showTimeService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createShowTime(@Valid @RequestBody ShowTimeDTO showTimeDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create ShowTime successfully")

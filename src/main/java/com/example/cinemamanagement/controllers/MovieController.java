@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @PostMapping(value = "")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createMovie(@ModelAttribute @Valid MovieDTO movieDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Create movie successfully")
@@ -43,6 +45,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateMovie(@PathVariable("id") long id,
                                                          @ModelAttribute @Valid MovieDTO movieDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
@@ -53,7 +56,8 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseSuccess> deleteProduct(@PathVariable("id") long id){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponseSuccess> deleteMovie(@PathVariable("id") long id){
         movieService.deleteMovie(id);
         return ResponseEntity.ok().body(ResponseSuccess.builder()
                 .message("Delete movie successfully")

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class MovieTypeController {
     private final MovieTypeService movieTypeService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> createMovieType(
             @Valid @RequestBody MovieTypeDTO movieTypeDTO){
         MovieType movieType = movieTypeService.createMovieType(movieTypeDTO);
@@ -46,6 +48,7 @@ public class MovieTypeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseSuccess> updateMovieType(@PathVariable("id") long id,
                                                            @Valid @RequestBody MovieTypeDTO movieTypeDTO){
         return ResponseEntity.ok().body(ResponseSuccess.builder()
