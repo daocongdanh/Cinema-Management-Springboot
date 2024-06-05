@@ -4,6 +4,7 @@ import com.example.cinemamanagement.responses.ResponseError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,6 +24,17 @@ public class GlobalExceptionHandler {
                 ResponseError.builder()
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .message(e.getMessage())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<ResponseError> handleAccessDeniedException(AccessDeniedException e){
+        return ResponseEntity.status(403).body(
+                ResponseError.builder()
+                        .status(HttpStatus.FORBIDDEN.value())
+                        .message("Access denied. You don't have the required role.")
                         .build()
         );
     }
@@ -52,7 +64,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ResponseError> handleBadCredentialsException(BadCredentialsException e){
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(401).body(
                 ResponseError.builder()
                         .status(HttpStatus.UNAUTHORIZED.value())
                         .message(e.getMessage())

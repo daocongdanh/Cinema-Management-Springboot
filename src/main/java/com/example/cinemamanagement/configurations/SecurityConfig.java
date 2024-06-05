@@ -47,7 +47,7 @@ public class SecurityConfig {
                 // Không lưu token ở session phía server
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Custom message khi gặp lỗi 403
-                .exceptionHandling(config -> config.accessDeniedHandler(customAccessDeniedHandler));
+                .exceptionHandling(config -> config.accessDeniedHandler(customAccessDeniedHandler)); // Nếu dùng @PreAuthorize thì k dùng được cái này
         return http.build();
     }
 }
