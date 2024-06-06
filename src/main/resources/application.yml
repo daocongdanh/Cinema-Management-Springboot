@@ -29,5 +29,6 @@ upload-path: src/main/resources/static
 
 # Jwt
 jwt:
-  expiration: 86400000 # (24 * 60 * 60 * 1000 mls)
+  expiration: 60000 # (1 * 60 * 1000 mls) 1 phút
+  refreshExpiration: 300000 # 5 phút
   secretKey: XeKCntPJuk/iJoaxpv9ifO4aj+6TXWpL123R9b47aqH0=

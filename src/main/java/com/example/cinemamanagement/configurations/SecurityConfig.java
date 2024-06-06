@@ -32,6 +32,7 @@ public class SecurityConfig {
                     requests
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/users/logout").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/movieTypes/**").permitAll()

@@ -1,5 +1,6 @@
 package com.example.cinemamanagement.filters;
 
+import com.example.cinemamanagement.repositories.TokenRepository;
 import com.example.cinemamanagement.services.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -28,6 +29,7 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -36,6 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String authHeader = request.getHeader("Authorization");
             if(authHeader != null && authHeader.startsWith("Bearer ")){
                 String token = authHeader.substring(7); // Lấy ra token
+                if(!tokenRepository.existsByToken(token)){
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("Token does not exist");
+                    return;
+                }
                 String username = jwtService.extractUsername(token); // Lấy username từ token
                 // Lấy ra đối tượng UserDetails
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
