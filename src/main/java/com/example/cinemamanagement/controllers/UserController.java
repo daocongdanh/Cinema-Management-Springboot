@@ -41,7 +41,11 @@ public class UserController {
 
     @PostMapping("/refreshToken")
     public ResponseEntity<ResponseSuccess> refreshToken(@Valid @RequestBody RefreshTokenDTO refreshTokenDTO){
-        return null;
+        return ResponseEntity.ok().body(ResponseSuccess.builder()
+                .message("RefreshToken successfully")
+                .status(HttpStatus.OK.value())
+                .data(userService.refreshToken(refreshTokenDTO))
+                .build());
     }
     @PostMapping("/logout")
     public ResponseEntity<ResponseSuccess> logout(@Valid @RequestBody LogoutDTO logoutDTO){

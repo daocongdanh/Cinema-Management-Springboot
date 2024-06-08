@@ -2,6 +2,7 @@ package com.example.cinemamanagement.filters;
 
 import com.example.cinemamanagement.repositories.TokenRepository;
 import com.example.cinemamanagement.services.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String token = authHeader.substring(7); // Lấy ra token
                 if(!tokenRepository.existsByToken(token)){
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().write("Token does not exist");
+                    response.getWriter().write("Invalid token");
                     return;
                 }
                 String username = jwtService.extractUsername(token); // Lấy username từ token
@@ -73,9 +74,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request,response);
         }
-        catch (JwtException e){
+        catch (ExpiredJwtException e){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid token");
+            response.getWriter().write("Token expired");
         }
         catch (Exception e){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

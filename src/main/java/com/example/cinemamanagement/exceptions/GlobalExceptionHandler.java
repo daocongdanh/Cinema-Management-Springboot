@@ -39,6 +39,28 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ResponseError> handleUnauthorizedException(UnauthorizedException e){
+        return ResponseEntity.status(401).body(
+                ResponseError.builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .message(e.getMessage())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ExpiredTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ResponseError> handleExpiredTokenException(ExpiredTokenException e){
+        return ResponseEntity.status(401).body(
+                ResponseError.builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .message(e.getMessage())
+                        .build()
+        );
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ResponseError> handleDataNotFoundException(ResourceNotFoundException e){

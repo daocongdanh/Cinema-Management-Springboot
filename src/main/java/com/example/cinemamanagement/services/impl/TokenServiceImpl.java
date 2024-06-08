@@ -1,6 +1,7 @@
 package com.example.cinemamanagement.services.impl;
 
 import com.example.cinemamanagement.exceptions.ResourceNotFoundException;
+import com.example.cinemamanagement.exceptions.UnauthorizedException;
 import com.example.cinemamanagement.models.Token;
 import com.example.cinemamanagement.models.User;
 import com.example.cinemamanagement.repositories.TokenRepository;
@@ -8,6 +9,7 @@ import com.example.cinemamanagement.services.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +25,7 @@ public class TokenServiceImpl implements TokenService {
     // Giới hạn tối đa 3 thiết bị
     private static final int MAX_TOKENS = 3;
     @Override
+    @Transactional
     public Token addToken(User user, String token, boolean isMobile) {
         List<Token> userTokens = tokenRepository.findAllByUser(user);
         int tokenCount = userTokens.size();
@@ -53,11 +56,24 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
+    @Transactional
     public void deleteToken(String token) {
         Optional<Token> tokenExist = tokenRepository.findByToken(token);
         if(tokenExist.isEmpty()){
             throw new ResourceNotFoundException("Token not found");
         }
         tokenRepository.delete(tokenExist.get());
+    }
+
+    @Override
+    public Token getTokenByRefreshToken(String refreshToken) {
+        return tokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new UnauthorizedException("Unauthenticated"));
+    }
+
+    @Override
+    @Transactional
+    public Token updateToken(Token token) {
+        return tokenRepository.save(token);
     }
 }

@@ -2,8 +2,10 @@ package com.example.cinemamanagement.services.impl;
 
 import com.example.cinemamanagement.dtos.LoginDTO;
 import com.example.cinemamanagement.dtos.LogoutDTO;
+import com.example.cinemamanagement.dtos.RefreshTokenDTO;
 import com.example.cinemamanagement.dtos.RegisterDTO;
 import com.example.cinemamanagement.exceptions.DuplicateValueException;
+import com.example.cinemamanagement.exceptions.ExpiredTokenException;
 import com.example.cinemamanagement.exceptions.ResourceNotFoundException;
 import com.example.cinemamanagement.models.Token;
 import com.example.cinemamanagement.models.User;
@@ -18,6 +20,7 @@ import com.example.cinemamanagement.services.TokenService;
 import com.example.cinemamanagement.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Security;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+    @Value("${jwt.refreshExpiration}")
+    private int refreshExpiration;
     @Override
     @Transactional // Nếu xảy ra lỗi trong quá trình xử lý -> rollback
     public UserResponse createUser(RegisterDTO registerDTO) {
@@ -137,5 +144,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout(LogoutDTO logoutDTO) {
         tokenService.deleteToken(logoutDTO.getToken());
+    }
+
+    @Override
+    public LoginResponse refreshToken(RefreshTokenDTO refreshTokenDTO) {
+        Token token = tokenService.getTokenByRefreshToken(refreshTokenDTO.getRefreshToken());
+        if(token.getRefreshExpirationDate().isBefore(LocalDateTime.now()))
+            throw new ExpiredTokenException("RefreshToken expired");
+        User user = token.getUser();
+        Token newToken = tokenService.updateToken(Token.builder()
+                        .id(token.getId())
+                .token(jwtService.generateToken(user))
+                .refreshToken(UUID.randomUUID().toString())
+                .refreshExpirationDate(LocalDateTime.now().plusSeconds(refreshExpiration/1000))
+                .user(user)
+                .isMobileDevice(token.isMobileDevice())
+                .build());
+        return LoginResponse.builder()
+                .token(newToken.getToken())
+                .refreshToken(newToken.getRefreshToken())
+                .id(user.getId())
+                .username(user.getUsername())
+                .roles(user.getUserRoles().stream()
+                        .map(userRole -> userRole.getRole().getRoleName())
+                        .toList())
+                .build();
     }
 }
